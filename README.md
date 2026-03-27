@@ -30,4 +30,4 @@ Shows a grid where:
 
 ---
 
-👨‍💻 Author: Your Name
+👨‍💻 Author: Artur Bruno de Oliveira
