@@ -1,0 +1,173 @@
+#include <iostream>
+using namespace std;
+
+//Cinema seat simulator
+//0 = Empty (false) / 1 = Occupied (true)
+
+void show_seats(bool seats[][30])
+{
+    cout<<"                                                             SEATS\n"
+          "        [--------------------------------------------------------------------------------------------------------------------]\n"
+          "        [                                                    SCREEN                                                            ]\n"
+          "        [--------------------------------------------------------------------------------------------------------------------]\n\n"
+          "                                                             COLUMNS\n\n\n"; //deve ter esse espaço no final
+    cout<<"        ";
+    
+    for(int i = 0; i < 30;i++){  //print the first line with the columns numbers
+        cout<<i<<"  ";
+        if(i < 10){
+            cout<<" ";
+        }
+    }
+    
+    cout<<"\n\n\n\n";
+    
+    for(int i = 0; i < 25; i++){    //print the rows
+        cout<<" "<<i<<"    ";
+        if(i<10){
+            cout<<" ";
+        }
+        
+        for(int j = 0; j < 30; j++){    //print the seats
+            if(seats[i][j] == true){
+                cout<<" 1  ";   //print if the seat is occupied
+            }
+            else{
+                cout<<" 0  ";   //print if empty
+            }
+        }
+        cout<<"     "<<i<<"\n\n";
+    }
+}
+
+bool status_seat_y(bool seats[][30], int y)
+{
+int j{0};
+    
+for(int i = 0 ; i < 25 ; i++)   //Check all seats in the column y
+{
+    if(seats[i][y] == true) //Count occupied seats to see if the column is full
+    {
+        j++;  
+    }
+}
+
+if(j == 25) //If the column is full, return true
+{
+    return true;
+}
+else
+{
+    return false;   //If the column has empty seats, return false
+}
+}
+
+bool status_seat_x(bool seats[][30], int x)
+{
+int j{0};
+    
+for(int i = 0 ; i < 30 ; i++)   //Check all seats in the row x
+{
+    if(seats[x][i] == true) //Count occupied seats to see if the row is full
+    {
+        j++;  
+    }
+}
+    
+if(j == 30) //If the row is full, return true
+{
+    return true;
+}
+else
+{
+    return false;   //If the row has empty seats, return false
+}
+}
+
+bool status_seat_x_y(bool seats[][30], int x, int y)
+{
+    if(seats[x][y] == true) //Check if the selected seat is already occupied
+    {
+        cout<<"\nThis seat is already occupied. Please choose another one";
+        return true;    //return true if the seat has already been selected
+    }
+    else
+    {
+        return false;   //return false if the seat is empty
+    }
+}
+
+void choose_seat(bool seats[][30])
+{
+    int x {0}, y {0};
+
+do
+{
+    bool row_repeater = true;
+    bool column_repeater = true;
+    do
+    {
+        cout<<"\nSelect a column: ";
+        cin>>y;
+        
+        if(y<0||y>=30)  //Check if the column number is in valid bounds
+        {
+            cout<<"\nInvalid input. Please try again\n";
+            continue;
+        }
+        
+        if(status_seat_y(seats,y) == true)  //Check if column is full
+        {
+            cout<<"\nThe selected column is already full. Please select another one";
+        }
+        else
+        {
+            column_repeater = false;    
+        }
+    }while(column_repeater == true);
+    
+    do
+    {
+        cout<<"\nSelect a row: ";
+        cin>>x;
+        
+        if(x<0||x>=25)  //Check if the row number is in valid bounds
+        {
+            cout<<"\nInvalid input. Please try again\n";
+            continue;
+        }
+        
+        if(status_seat_x(seats,x) == true) //Check if the row is full
+        {
+            cout<<"\nThe selected row is already full. Please select another one";
+        }
+        else
+        {
+            row_repeater = false;
+        }
+    }while(row_repeater == true);
+    
+}while(status_seat_x_y(seats,x,y)== true);
+
+    seats[x][y] = true;
+    cout<<"\nYour selected seat is: ";
+    
+    if(y < 10)  //Display the selected seat
+    {
+    cout<<x<<"0"<<y;    
+    }
+    else
+    {
+    cout<<x<<y;
+    }    
+}
+
+int main()
+{
+    bool seats[25][30] = {false};
+    
+    show_seats(seats);
+    choose_seat(seats);
+    
+    return 0;
+}
